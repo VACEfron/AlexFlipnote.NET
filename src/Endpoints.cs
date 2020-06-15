@@ -231,11 +231,7 @@ namespace AlexFlipnote.NET
                 Hex = string.Format("{0:X6}", new Random().Next(0x1000000));
 
             var data = RequestFunctions.JObjectRequest($"color/{Hex}");
-            return GetColor(data);
-        }
 
-        private static Color GetColor(JObject data)
-        {
             var Color = new Color
             {
                 BlackOrWhiteText = data["blackorwhite_text"].Value<string>(),
@@ -255,7 +251,6 @@ namespace AlexFlipnote.NET
                 Shades = JsonConvert.DeserializeObject<string[]>(data["shade"].ToString()),
                 Tints = JsonConvert.DeserializeObject<string[]>(data["tint"].ToString()),
             };
-
             return Color;
         }
 
