@@ -8,7 +8,7 @@ https://www.nuget.org/packages/AlexFlipnote.NET/
 Example command using [Discord.NET](https://github.com/discord-net/Discord.Net) and AlexFlipnote.NET.
 ```csharp
 [Command("captcha"), Summary("Create your custom captcha.")]
-public async Task Supreme([Remainder]string MyText)
+public async Task Captcha([Remainder]string MyText)
 {
     var stream = AlexEndpoints.Captcha(MyText);
     await Context.Channel.SendFileAsync(stream, "image.png");
