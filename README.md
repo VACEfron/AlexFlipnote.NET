@@ -10,7 +10,7 @@ Example command using [Discord.NET](https://github.com/discord-net/Discord.Net) 
 [Command("captcha"), Summary("Create your custom captcha.")]
 public async Task Captcha([Remainder]string MyText)
 {
-    var stream = AlexEndpoints.Captcha(MyText);
+    var stream = AlexEndpoints.Captcha(MyText); // Invoke the captcha method. All endpoints can be found in the AlexEndpoints class.
     await Context.Channel.SendFileAsync(stream, "image.png");
 }
 ```
