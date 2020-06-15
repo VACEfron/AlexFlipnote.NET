@@ -7,8 +7,6 @@ https://www.nuget.org/packages/AlexFlipnote.NET/
 ## Example
 Example command using [Discord.NET](https://github.com/discord-net/Discord.Net) and AlexFlipnote.NET.
 ```csharp
-using AlexFlipnote.NET;
-...
 [Command("captcha"), Summary("Create your custom captcha.")]
 public async Task Captcha([Remainder]string MyText)
 {
