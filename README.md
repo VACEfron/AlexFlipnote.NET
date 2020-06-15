@@ -1,5 +1,5 @@
-# AlexFlipnote.NET
- 🍃 An API wrapper for AlexFlipnote's web API.
+# 🍃 AlexFlipnote.NET
+An API wrapper for AlexFlipnote's web API.
  
 ## Installation
 https://www.nuget.org/packages/AlexFlipnote.NET/
