@@ -15,7 +15,7 @@
     <PackageTags>API, wrapper, API wrapper, AlexFlipnote</PackageTags>
     <NeutralLanguage></NeutralLanguage>
     <PackageLicenseExpression></PackageLicenseExpression>
-    <PackageLicenseFile>LICENSE.txt</PackageLicenseFile>
+    <PackageLicenseFile>LICENSE.md</PackageLicenseFile>
   </PropertyGroup>
 
   <ItemGroup>
@@ -23,7 +23,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Include="LICENSE.txt">
+    <None Include="LICENSE.md">
       <Pack>True</Pack>
       <PackagePath></PackagePath>
     </None>
