@@ -11,8 +11,8 @@ Example command using [Discord.NET](https://github.com/discord-net/Discord.Net) 
 public async Task Captcha([Remainder]string MyText)
 {
     // Invoke the Captcha method.
-    // All endpoints can be accessed from the AlexEndpoints class.
-    var stream = AlexEndpoints.Captcha(MyText); 
+    // All endpoints can be accessed from the AlexEndpoint class.
+    var stream = AlexEndpoint.Captcha(MyText); 
 
     await Context.Channel.SendFileAsync(stream, "image.png");
 }
