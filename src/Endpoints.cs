@@ -5,7 +5,7 @@ using System.IO;
 
 namespace AlexFlipnote.NET
 {
-    public static class AlexEndpoints
+    public static class AlexEndpoint
     {
         /// <summary>
         /// Returns a MemoryStream for your custom Minecraft-style 'achievement unlocked' popup.
@@ -86,6 +86,71 @@ namespace AlexFlipnote.NET
         }
 
         /// <summary>
+        /// Returns an object with all provided color info.
+        /// </summary>
+        /// <returns></returns>
+        public static Color Color(string Hex = "random")
+        {
+            if (Hex == "random")
+                Hex = string.Format("{0:X6}", new Random().Next(0x1000000));
+
+            var data = RequestFunctions.JObjectRequest($"color/{Hex}");
+
+            var Color = new Color
+            {
+                BlackOrWhiteText = data["blackorwhite_text"].Value<string>(),
+                Brightness = data["brightness"].Value<int>(),
+                Hex = data["hex"].Value<string>(),
+                ImageUrl = data["image"].Value<string>(),
+                GradientImageUrl = data["image_gradient"].Value<string>(),
+                Int = data["int"].Value<int>(),
+                Name = data["name"].Value<string>(),
+                RGB = data["rgb"].Value<string>(),
+                RGBValue = new Color.RgbValue
+                {
+                    R = data["rgb_values"]["r"].Value<int>(),
+                    G = data["rgb_values"]["g"].Value<int>(),
+                    B = data["rgb_values"]["b"].Value<int>()
+                },
+                Shades = JsonConvert.DeserializeObject<string[]>(data["shade"].ToString()),
+                Tints = JsonConvert.DeserializeObject<string[]>(data["tint"].ToString()),
+            };
+            return Color;
+        }
+
+        /// <summary>
+        /// Returns a MemoryStream for an image of a color.
+        /// </summary>
+        /// <returns></returns>
+        public static MemoryStream ColorImage(string Hex)
+        {
+            return RequestFunctions.ImageRequest($"color/image/{Hex}");
+        }
+
+        /// <summary>
+        /// Returns a MemoryStream for a gradient image of a color.
+        /// </summary>
+        /// <returns></returns>
+        public static MemoryStream ColorImageGradient(string Hex)
+        {
+            return RequestFunctions.ImageRequest($"color/image/gradient/{Hex}");
+        }
+
+        /// <summary>
+        /// Returns a MemoryStream for a colourified image.
+        /// </summary>
+        /// <returns></returns>
+        public static MemoryStream Colourify(string ImageUrl, string ColorHex = "", string BackgroundHex = "")
+        {
+            if (ColorHex != "")
+                ColorHex = "&c=" + ColorHex;
+            if (BackgroundHex != "")
+                BackgroundHex = "&b=" + BackgroundHex;
+
+            return RequestFunctions.ImageRequest($"colourify?image={ImageUrl}{ColorHex}{BackgroundHex}");
+        }
+
+        /// <summary>
         /// Returns a MemoryStream for a fake Google 'did you mean' image.
         /// </summary>
         /// <returns></returns>
@@ -119,6 +184,99 @@ namespace AlexFlipnote.NET
         public static MemoryStream Facts(string Text)
         {
             return RequestFunctions.ImageRequest($"facts?text={Text}");
+        }
+
+        public class Filter
+        {
+            /// <summary>
+            /// Returns a MemoryStream for a blurred version of your image.
+            /// </summary>
+            /// <returns></returns>
+            public static MemoryStream Blur(string ImageUrl)
+            {
+                return RequestFunctions.ImageRequest($"filter/blur?image={ImageUrl}");
+            }
+
+            /// <summary>
+            /// Returns a MemoryStream for an inverted version of your image.
+            /// </summary>
+            /// <returns></returns>
+            public static MemoryStream Invert(string ImageUrl)
+            {
+                return RequestFunctions.ImageRequest($"filter/invert?image={ImageUrl}");
+            }
+
+            /// <summary>
+            /// Returns a MemoryStream for a black and white version of your image.
+            /// </summary>
+            /// <returns></returns>
+            public static MemoryStream BlackAndWhite(string ImageUrl)
+            {
+                return RequestFunctions.ImageRequest($"filter/b&w?image={ImageUrl}");
+            }
+
+            /// <summary>
+            /// Returns a MemoryStream for a deepfried version of your image.
+            /// </summary>
+            /// <returns></returns>
+            public static MemoryStream Deepfry(string ImageUrl)
+            {
+                return RequestFunctions.ImageRequest($"filter/deepfry?image={ImageUrl}");
+            }
+
+            /// <summary>
+            /// Returns a MemoryStream for a pixelated version of your image.
+            /// </summary>
+            /// <returns></returns>
+            public static MemoryStream Pixelate(string ImageUrl)
+            {
+                return RequestFunctions.ImageRequest($"filter/pixelate?image={ImageUrl}");
+            }
+
+            /// <summary>
+            /// Returns a MemoryStream for a magik version of your image.
+            /// </summary>
+            /// <returns></returns>
+            public static MemoryStream Magik(string ImageUrl)
+            {
+                return RequestFunctions.ImageRequest($"filter/magik?image={ImageUrl}");
+            }
+
+            /// <summary>
+            /// Returns a MemoryStream for a jpeg'd version of your image.
+            /// </summary>
+            /// <returns></returns>
+            public static MemoryStream Jpegify(string ImageUrl)
+            {
+                return RequestFunctions.ImageRequest($"filter/jpegify?image={ImageUrl}");
+            }
+
+            /// <summary>
+            /// Returns a MemoryStream for a snowy version of your image.
+            /// </summary>
+            /// <returns></returns>
+            public static MemoryStream Snow(string ImageUrl)
+            {
+                return RequestFunctions.ImageRequest($"filter/snow?image={ImageUrl}");
+            }
+
+            /// <summary>
+            /// Returns a MemoryStream for a gay version of your image.
+            /// </summary>
+            /// <returns></returns>
+            public static MemoryStream Gay(string ImageUrl)
+            {
+                return RequestFunctions.ImageRequest($"filter/gay?image={ImageUrl}");
+            }
+
+            /// <summary>
+            /// Returns a MemoryStream for a communist version of your image.
+            /// </summary>
+            /// <returns></returns>
+            public static MemoryStream Communist(string ImageUrl)
+            {
+                return RequestFunctions.ImageRequest($"filter/communist?image={ImageUrl}");
+            }
         }
 
         /// <summary>
@@ -219,40 +377,7 @@ namespace AlexFlipnote.NET
         public static MemoryStream Trash(string FaceAvatarUrl, string TrashAvatarUrl)
         {
             return RequestFunctions.ImageRequest($"trash?face={FaceAvatarUrl}&trash={TrashAvatarUrl}");
-        }
-
-        /// <summary>
-        /// Returns an object with all provided color info.
-        /// </summary>
-        /// <returns></returns>
-        public static Color Color(string Hex = "random")
-        {
-            if (Hex == "random")
-                Hex = string.Format("{0:X6}", new Random().Next(0x1000000));
-
-            var data = RequestFunctions.JObjectRequest($"color/{Hex}");
-
-            var Color = new Color
-            {
-                BlackOrWhiteText = data["blackorwhite_text"].Value<string>(),
-                Brightness = data["brightness"].Value<int>(),
-                Hex = data["hex"].Value<string>(),
-                ImageUrl = data["image"].Value<string>(),
-                GradientImageUrl = data["image_gradient"].Value<string>(),
-                Int = data["int"].Value<int>(),
-                Name = data["name"].Value<string>(),
-                RGB = data["rgb"].Value<string>(),
-                RGBValue = new Color.RgbValue
-                {
-                    R = data["rgb_values"]["r"].Value<int>(),
-                    G = data["rgb_values"]["g"].Value<int>(),
-                    B = data["rgb_values"]["b"].Value<int>()
-                },
-                Shades = JsonConvert.DeserializeObject<string[]>(data["shade"].ToString()),
-                Tints = JsonConvert.DeserializeObject<string[]>(data["tint"].ToString()),
-            };
-            return Color;
-        }
+        }        
 
         /// <summary>
         /// Returns an object with all provided Steam profile info.
