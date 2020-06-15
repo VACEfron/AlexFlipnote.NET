@@ -1,5 +1,13 @@
 # 🍃 AlexFlipnote.NET
 An API wrapper for AlexFlipnote's web API.
+
+## To do
+ * /color/image/<hex>
+ * /color/image/gradient/<hex>
+ * /colourify?image=url[&c=hex|&b=hex]
+ * /filter
+ * /filter/<overlay>
+ * /filter/magik
  
 ## Installation
 https://www.nuget.org/packages/AlexFlipnote.NET/
