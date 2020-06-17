@@ -1,23 +1,49 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
+using System.Collections.Generic;
 using System.IO;
 
 namespace AlexFlipnote.NET
 {
+    /// <summary>
+    /// Class which contains all methods for the endpoints.
+    /// </summary>
     public static class AlexEndpoint
     {
         /// <summary>
         /// Returns a MemoryStream for your custom Minecraft-style 'achievement unlocked' popup.
         /// </summary>
         /// <returns></returns>
+        public static MemoryStream Achievement(string Text, Icon Icon)
+        {
+            int iconInt;
+
+            if (Icon == Icon.Random)
+                iconInt = new Random().Next(1, 44);
+            else
+            {
+                var icons = new List<Icon>();
+                foreach (Icon i in Enum.GetValues(typeof(Icon)))
+                    icons.Add(i);
+
+                iconInt = icons.FindIndex(x => x == Icon) + 1;
+            }                    
+
+            return RequestFunctions.ImageRequest($"achievement?text={Text}&icon={iconInt}");
+        }
+
+        /// <summary>
+        /// Returns a MemoryStream for your custom Minecraft-style 'achievement unlocked' popup.
+        /// </summary>
+        /// <returns></returns>
         public static MemoryStream Achievement(string Text, int? Icon = null)
         {
-            string iconString = "";
-            if (Icon != null) iconString = "&" + Icon.ToString();
-
-            return RequestFunctions.ImageRequest($"achievement?text={Text}{iconString}");
-        }
+            if (Icon is null)
+                Icon = new Random().Next(1, 44);
+            
+            return RequestFunctions.ImageRequest($"achievement?text={Text}&icon={Icon}");
+        }        
 
         /// <summary>
         /// Returns a MemoryStream for your own image over the 'Am I a joke to you?' meme.
@@ -77,12 +103,34 @@ namespace AlexFlipnote.NET
         /// Returns a MemoryStream for your custom Minecraft-style 'challenge completed' popup.
         /// </summary>
         /// <returns></returns>
+        public static MemoryStream Challenge(string Text, Icon Icon)
+        {
+            int iconInt;
+
+            if (Icon == Icon.Random)
+                iconInt = new Random().Next(1, 44);
+            else
+            {
+                var icons = new List<Icon>();
+                foreach (Icon i in Enum.GetValues(typeof(Icon)))
+                    icons.Add(i);
+
+                iconInt = icons.FindIndex(x => x == Icon) + 1;
+            }
+
+            return RequestFunctions.ImageRequest($"challenge?text={Text}&icon={iconInt}");
+        }
+
+        /// <summary>
+        /// Returns a MemoryStream for your custom Minecraft-style 'challenge completed' popup.
+        /// </summary>
+        /// <returns></returns>
         public static MemoryStream Challenge(string Text, int? Icon = null)
         {
-            string iconString = "";
-            if (Icon != null) iconString = "&" + Icon.ToString();
+            if (Icon is null)
+                Icon = new Random().Next(1, 44);
 
-            return RequestFunctions.ImageRequest($"challenge?text={Text}{iconString}");
+            return RequestFunctions.ImageRequest($"challenge?text={Text}&icon={Icon}");
         }
 
         /// <summary>
