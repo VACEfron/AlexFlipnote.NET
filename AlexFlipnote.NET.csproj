@@ -4,7 +4,7 @@
     <TargetFramework>netstandard2.1</TargetFramework>
     <OutputType>Library</OutputType>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <Version>1.2</Version>
+    <Version>1.2.1</Version>
     <Authors>VAC Efron</Authors>
     <Company />
     <Description>An API wrapper for AlexFlipnote's API.</Description>
@@ -16,7 +16,11 @@
     <NeutralLanguage></NeutralLanguage>
     <PackageLicenseExpression></PackageLicenseExpression>
     <PackageLicenseFile>LICENSE.md</PackageLicenseFile>
-    <PackageReleaseNotes>Now also supporting all other color endpoints and filters.</PackageReleaseNotes>
+    <PackageReleaseNotes>Fixed comments for intellisense.</PackageReleaseNotes>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <DocumentationFile>C:\Users\Hayk\Desktop\Programs\api.alexflipnote Wrapper\AlexFlipnote.NET\AlexFlipnote.NET.xml</DocumentationFile>
   </PropertyGroup>
 
   <ItemGroup>
