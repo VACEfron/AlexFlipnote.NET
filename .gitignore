@@ -2,6 +2,7 @@
 
 *.user
 *.sln
+*.xml
 
 Properties/
 obj/
