@@ -23,7 +23,7 @@ namespace AlexFlipnote.NET
                 iconInt = new Random().Next(1, 44);
             else
                 iconInt = (int)Icon + 1;
-
+            Console.WriteLine($"https://api.alexflipnote.dev/achievement?text={Text}&icon={iconInt}");
             return RequestFunctions.ImageRequest($"achievement?text={Text}&icon={iconInt}");
         }
 
@@ -425,7 +425,7 @@ namespace AlexFlipnote.NET
 
             var Steam = new Steam
             {
-                SteamId = new Steam.IDs
+                SteamId = new Steam.SteamID
                 {
                     SteamId3 = data["id"]["steamid3"].Value<string>(),
                     SteamId32 = data["id"]["steamid32"].Value<string>(),

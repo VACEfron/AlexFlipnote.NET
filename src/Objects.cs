@@ -24,11 +24,11 @@
 
     public class Steam
     {
-        public IDs SteamId { get; set; }
+        public SteamID SteamId { get; set; }
         public SteamAvatar Avatar { get; set; }
         public SteamProfile Profile { get; set; }
 
-        public class IDs
+        public class SteamID
         {
             public string SteamId3 { get; set; }
             public string SteamId32 { get; set; }
@@ -58,6 +58,9 @@
         }
     }
 
+    /// <summary>
+    /// Logo types for the Supreme endpoint.
+    /// </summary>
     public enum LogoType
     {
         Normal,
@@ -65,6 +68,9 @@
         Light
     }
 
+    /// <summary>
+    /// Minecraft icons for the achievement and challenge endpoints.
+    /// </summary>
     public enum Icon
     {
         GrassBlock,
