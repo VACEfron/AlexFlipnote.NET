@@ -20,3 +20,10 @@ public async Task Captcha([Remainder]string MyText)
 
 ## AlexFlipnote's API
 https://api.alexflipnote.dev/
+
+## Discord
+Me: VAC Efron#0001
+
+My server: https://discord.gg/TtR32WT
+
+AlexFlipnote: https://discord.gg/AlexFlipnote
