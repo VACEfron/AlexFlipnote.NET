@@ -22,13 +22,7 @@ namespace AlexFlipnote.NET
             if (Icon == Icon.Random)
                 iconInt = new Random().Next(1, 44);
             else
-            {
-                var icons = new List<Icon>();
-                foreach (Icon i in Enum.GetValues(typeof(Icon)))
-                    icons.Add(i);
-
-                iconInt = icons.FindIndex(x => x == Icon) + 1;
-            }                    
+                iconInt = (int)Icon + 1;
 
             return RequestFunctions.ImageRequest($"achievement?text={Text}&icon={iconInt}");
         }
@@ -110,13 +104,7 @@ namespace AlexFlipnote.NET
             if (Icon == Icon.Random)
                 iconInt = new Random().Next(1, 44);
             else
-            {
-                var icons = new List<Icon>();
-                foreach (Icon i in Enum.GetValues(typeof(Icon)))
-                    icons.Add(i);
-
-                iconInt = icons.FindIndex(x => x == Icon) + 1;
-            }
+                iconInt = (int)Icon + 1;
 
             return RequestFunctions.ImageRequest($"challenge?text={Text}&icon={iconInt}");
         }
