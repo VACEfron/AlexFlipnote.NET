@@ -4,7 +4,7 @@
     <TargetFramework>netstandard2.1</TargetFramework>
     <OutputType>Library</OutputType>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <Version>1.3</Version>
+    <Version>1.4</Version>
     <Authors>VAC Efron</Authors>
     <Company />
     <Description>An API wrapper for AlexFlipnote's API.</Description>
@@ -16,7 +16,7 @@
     <NeutralLanguage></NeutralLanguage>
     <PackageLicenseExpression></PackageLicenseExpression>
     <PackageLicenseFile>LICENSE.md</PackageLicenseFile>
-    <PackageReleaseNotes>Made it much easier to customize icons for the achievement and challenge endpoints. Fixed bug which broke icon customization.</PackageReleaseNotes>
+    <PackageReleaseNotes>Added support for new icon for achievement and challenge endpoint.</PackageReleaseNotes>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">

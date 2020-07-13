@@ -20,7 +20,7 @@ namespace AlexFlipnote.NET
             int iconInt;
 
             if (Icon == Icon.Random)
-                iconInt = new Random().Next(1, 44);
+                iconInt = new Random().Next(1, 45);
             else
                 iconInt = (int)Icon;
             
@@ -34,7 +34,7 @@ namespace AlexFlipnote.NET
         public static MemoryStream Achievement(string Text, int? Icon = null)
         {
             if (Icon is null)
-                Icon = new Random().Next(1, 44);
+                Icon = new Random().Next(1, 45);
             
             return RequestFunctions.ImageRequest($"achievement?text={Text}&icon={Icon}");
         }        
