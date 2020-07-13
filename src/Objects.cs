@@ -73,7 +73,7 @@
     /// </summary>
     public enum Icon
     {
-        GrassBlock,
+        GrassBlock = 1,
         Diamond,
         DiamondSword,
         Creeper,
@@ -117,6 +117,7 @@
         Bread,
         WoodenSword,
         Bone,
+        OakLog,
         Random
     }
 }

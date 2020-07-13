@@ -22,7 +22,7 @@ namespace AlexFlipnote.NET
             if (Icon == Icon.Random)
                 iconInt = new Random().Next(1, 44);
             else
-                iconInt = (int)Icon + 1;
+                iconInt = (int)Icon;
             
             return RequestFunctions.ImageRequest($"achievement?text={Text}&icon={iconInt}");
         }
@@ -104,7 +104,7 @@ namespace AlexFlipnote.NET
             if (Icon == Icon.Random)
                 iconInt = new Random().Next(1, 44);
             else
-                iconInt = (int)Icon + 1;
+                iconInt = (int)Icon;
 
             return RequestFunctions.ImageRequest($"challenge?text={Text}&icon={iconInt}");
         }
