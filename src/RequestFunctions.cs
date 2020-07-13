@@ -39,10 +39,12 @@ namespace AlexFlipnote.NET
         {
             try
             {
-                WebClient WebClient = new WebClient();
-                byte[] Byte = WebClient.DownloadData($"https://api.alexflipnote.dev/{Endpoint}");
+                using (WebClient WebClient = new WebClient())
+                {
+                    byte[] Byte = WebClient.DownloadData($"https://api.alexflipnote.dev/{Endpoint}");
+                    return new MemoryStream(Byte);
+                }
 
-                return new MemoryStream(Byte);
             }
             catch (Exception e) { throw e; }            
         }
