@@ -69,6 +69,25 @@
     }
 
     /// <summary>
+    /// Filters options for the filter endpoints.
+    /// </summary>
+    public enum FilterType
+    {
+        Blur,
+        Invert,
+        BlackAndWhite,
+        DeepFry,
+        Wide,
+        Snow,
+        Gay,
+        Pixelate,
+        Jpegify,
+        Magik,
+        Communist,
+        Random
+    }
+
+    /// <summary>
     /// Minecraft icons for the achievement and challenge endpoints.
     /// </summary>
     public enum Icon

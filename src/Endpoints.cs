@@ -222,107 +222,25 @@ namespace AlexFlipnote.NET
             return RequestFunctions.ImageRequest($"facts?text={Text}");
         }
 
-        public class Filter
+        /// <summary>
+        /// Contains all filters.
+        /// </summary>
+        /// <returns></returns>
+        public static MemoryStream Filter(string ImageUrl, FilterType Filter = FilterType.Random)
         {
-            /// <summary>
-            /// Returns a MemoryStream for a blurred version of your image.
-            /// </summary>
-            /// <returns></returns>
-            public static MemoryStream Blur(string ImageUrl)
+            string filterName;
+            if (Filter == FilterType.Random)
             {
-                return RequestFunctions.ImageRequest($"filter/blur?image={ImageUrl}");
+                Array values = Enum.GetValues(typeof(FilterType));
+                filterName = values.GetValue(new Random().Next(values.Length - 1)).ToString().ToLower();
             }
+            else
+                filterName = Filter.ToString().ToLower();
 
-            /// <summary>
-            /// Returns a MemoryStream for an inverted version of your image.
-            /// </summary>
-            /// <returns></returns>
-            public static MemoryStream Invert(string ImageUrl)
-            {
-                return RequestFunctions.ImageRequest($"filter/invert?image={ImageUrl}");
-            }
+            filterName = filterName.Replace("blackandwhite", "b&w");
 
-            /// <summary>
-            /// Returns a MemoryStream for a black and white version of your image.
-            /// </summary>
-            /// <returns></returns>
-            public static MemoryStream BlackAndWhite(string ImageUrl)
-            {
-                return RequestFunctions.ImageRequest($"filter/b&w?image={ImageUrl}");
-            }
-
-            /// <summary>
-            /// Returns a MemoryStream for a deepfried version of your image.
-            /// </summary>
-            /// <returns></returns>
-            public static MemoryStream Deepfry(string ImageUrl)
-            {
-                return RequestFunctions.ImageRequest($"filter/deepfry?image={ImageUrl}");
-            }
-
-            /// <summary>
-            /// Returns a MemoryStream for a pixelated version of your image.
-            /// </summary>
-            /// <returns></returns>
-            public static MemoryStream Pixelate(string ImageUrl)
-            {
-                return RequestFunctions.ImageRequest($"filter/pixelate?image={ImageUrl}");
-            }
-
-            /// <summary>
-            /// Returns a MemoryStream for a magik version of your image.
-            /// </summary>
-            /// <returns></returns>
-            public static MemoryStream Magik(string ImageUrl)
-            {
-                return RequestFunctions.ImageRequest($"filter/magik?image={ImageUrl}");
-            }
-
-            /// <summary>
-            /// Returns a MemoryStream for a jpeg'd version of your image.
-            /// </summary>
-            /// <returns></returns>
-            public static MemoryStream Jpegify(string ImageUrl)
-            {
-                return RequestFunctions.ImageRequest($"filter/jpegify?image={ImageUrl}");
-            }
-
-            /// <summary>
-            /// Returns a MemoryStream for a wide version of your image.
-            /// </summary>
-            /// <returns></returns>
-            public static MemoryStream Wide(string ImageUrl)
-            {
-                return RequestFunctions.ImageRequest($"filter/wide?image={ImageUrl}");
-            }
-
-            /// <summary>
-            /// Returns a MemoryStream for a snowy version of your image.
-            /// </summary>
-            /// <returns></returns>
-            public static MemoryStream Snow(string ImageUrl)
-            {
-                return RequestFunctions.ImageRequest($"filter/snow?image={ImageUrl}");
-            }
-
-            /// <summary>
-            /// Returns a MemoryStream for a gay version of your image.
-            /// </summary>
-            /// <returns></returns>
-            public static MemoryStream Gay(string ImageUrl)
-            {
-                return RequestFunctions.ImageRequest($"filter/gay?image={ImageUrl}");
-            }
-
-            /// <summary>
-            /// Returns a MemoryStream for a communist version of your image.
-            /// </summary>
-            /// <returns></returns>
-            public static MemoryStream Communist(string ImageUrl)
-            {
-                return RequestFunctions.ImageRequest($"filter/communist?image={ImageUrl}");
-            }
-        }
+            return RequestFunctions.ImageRequest($"filter/{filterName}?image={ImageUrl}");
+        }    
 
         /// <summary>
         /// Returns a MemoryStream for your own 'the floor is ...' meme.
