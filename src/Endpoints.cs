@@ -288,6 +288,15 @@ namespace AlexFlipnote.NET
             }
 
             /// <summary>
+            /// Returns a MemoryStream for a wide version of your image.
+            /// </summary>
+            /// <returns></returns>
+            public static MemoryStream Wide(string ImageUrl)
+            {
+                return RequestFunctions.ImageRequest($"filter/wide?image={ImageUrl}");
+            }
+
+            /// <summary>
             /// Returns a MemoryStream for a snowy version of your image.
             /// </summary>
             /// <returns></returns>
