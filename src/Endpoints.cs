@@ -226,7 +226,7 @@ namespace AlexFlipnote.NET
         /// Contains all filters.
         /// </summary>
         /// <returns></returns>
-        public static MemoryStream Filter(string ImageUrl, FilterType Filter = FilterType.Random)
+        public static MemoryStream Filter(string ImageUrl, FilterType Filter)
         {
             string filterName;
             if (Filter == FilterType.Random)
