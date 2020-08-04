@@ -2,49 +2,50 @@
 using Newtonsoft.Json.Linq;
 using System.IO;
 using System.Net;
-using System;
 
 namespace AlexFlipnote.NET
 {
     public static class RequestFunctions
-    {
-        public static string JsonRequest(string Endpoint, string JsonObject)
+    {        
+        public static string JsonRequest(string endpoint, string jsonObject)
         {
             try
             {
-                var request = (HttpWebRequest)WebRequest.Create($"https://api.alexflipnote.dev/{Endpoint}");
-                var response = (HttpWebResponse)request.GetResponse();
-                var responseString = new StreamReader(response.GetResponseStream()).ReadToEnd();
-                var data = (JObject)JsonConvert.DeserializeObject(responseString);
+                JObject data = MakeWebRequest(endpoint);
 
-                return data[JsonObject].Value<string>();
+                return data[jsonObject].Value<string>();
             }
-            catch(Exception e) { throw e; }            
+            catch { throw; }            
         }
 
-        public static JObject JObjectRequest(string Endpoint)
+        public static JObject JObjectRequest(string endpoint)
         {
             try
             {
-                var request = (HttpWebRequest)WebRequest.Create($"https://api.alexflipnote.dev/{Endpoint}");
-                var response = (HttpWebResponse)request.GetResponse();
-                var responseString = new StreamReader(response.GetResponseStream()).ReadToEnd();
-
-                return (JObject)JsonConvert.DeserializeObject(responseString);
+                return MakeWebRequest(endpoint);
             }
-            catch (Exception e) { throw e; }
+            catch { throw; }
         }
 
-        public static MemoryStream ImageRequest(string Endpoint)
+        public static MemoryStream ImageRequest(string endpoint)
         {
             try
             {
-                using WebClient WebClient = new WebClient();
+                using WebClient webClient = new WebClient();
                 
-                byte[] Byte = WebClient.DownloadData($"https://api.alexflipnote.dev/{Endpoint}");
-                return new MemoryStream(Byte);          
+                byte[] byteArray = webClient.DownloadData($"https://api.alexflipnote.dev/{endpoint}");
+                return new MemoryStream(byteArray);          
             }
-            catch (Exception e) { throw e; }            
+            catch { throw; }            
+        }
+
+        public static JObject MakeWebRequest(string endpoint)
+        {
+            HttpWebRequest request = (HttpWebRequest)WebRequest.Create($"https://api.alexflipnote.dev/{endpoint}");
+            HttpWebResponse response = (HttpWebResponse)request.GetResponse();
+            string responseString = new StreamReader(response.GetResponseStream()).ReadToEnd();
+
+            return (JObject)JsonConvert.DeserializeObject(responseString);
         }
     }
 }

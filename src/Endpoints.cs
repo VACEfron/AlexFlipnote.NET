@@ -1,7 +1,6 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
-using System.Collections.Generic;
 using System.IO;
 
 namespace AlexFlipnote.NET
@@ -15,46 +14,46 @@ namespace AlexFlipnote.NET
         /// Returns a MemoryStream for your custom Minecraft-style 'achievement unlocked' popup.
         /// </summary>
         /// <returns></returns>
-        public static MemoryStream Achievement(string Text, Icon Icon)
+        public static MemoryStream Achievement(string text, Icon icon)
         {
             int iconInt;
 
-            if (Icon == Icon.Random)
+            if (icon == Icon.Random)
                 iconInt = new Random().Next(1, 45);
             else
-                iconInt = (int)Icon;
+                iconInt = (int)icon;
             
-            return RequestFunctions.ImageRequest($"achievement?text={Text}&icon={iconInt}");
+            return RequestFunctions.ImageRequest($"achievement?text={text}&icon={iconInt}");
         }
 
         /// <summary>
         /// Returns a MemoryStream for your custom Minecraft-style 'achievement unlocked' popup.
         /// </summary>
         /// <returns></returns>
-        public static MemoryStream Achievement(string Text, int? Icon = null)
+        public static MemoryStream Achievement(string text, int? icon = null)
         {
-            if (Icon is null)
-                Icon = new Random().Next(1, 45);
+            if (icon is null)
+                icon = new Random().Next(1, 45);
             
-            return RequestFunctions.ImageRequest($"achievement?text={Text}&icon={Icon}");
+            return RequestFunctions.ImageRequest($"achievement?text={text}&icon={icon}");
         }        
 
         /// <summary>
         /// Returns a MemoryStream for your own image over the 'Am I a joke to you?' meme.
         /// </summary>
         /// <returns></returns>
-        public static MemoryStream AmIAJoke(string ImageUrl)
+        public static MemoryStream AmIAJoke(string imageUrl)
         {
-            return RequestFunctions.ImageRequest($"amiajoke?image={ImageUrl}");
+            return RequestFunctions.ImageRequest($"amiajoke?image={imageUrl}");
         }
 
         /// <summary>
         /// Returns a MemoryStream for showing how bad someone is.
         /// </summary>
         /// <returns></returns>
-        public static MemoryStream Bad(string ImageUrl)
+        public static MemoryStream Bad(string imageUrl)
         {
-            return RequestFunctions.ImageRequest($"bad?image={ImageUrl}");
+            return RequestFunctions.ImageRequest($"bad?image={imageUrl}");
         }
 
         /// <summary>
@@ -70,18 +69,18 @@ namespace AlexFlipnote.NET
         /// Returns a MemoryStream for your own 'Tom calling' reaction meme.
         /// </summary>
         /// <returns></returns>
-        public static MemoryStream Calling(string Text)
+        public static MemoryStream Calling(string text)
         {
-            return RequestFunctions.ImageRequest($"calling?text={Text}");
+            return RequestFunctions.ImageRequest($"calling?text={text}");
         }
 
         /// <summary>
         /// Returns a MemoryStream for your custom captcha image.
         /// </summary>
         /// <returns></returns>
-        public static MemoryStream Captcha(string Text)
+        public static MemoryStream Captcha(string text)
         {
-            return RequestFunctions.ImageRequest($"captcha?text={Text}");
+            return RequestFunctions.ImageRequest($"captcha?text={text}");
         }
 
         /// <summary>
@@ -97,40 +96,40 @@ namespace AlexFlipnote.NET
         /// Returns a MemoryStream for your custom Minecraft-style 'challenge completed' popup.
         /// </summary>
         /// <returns></returns>
-        public static MemoryStream Challenge(string Text, Icon Icon)
+        public static MemoryStream Challenge(string text, Icon icon)
         {
             int iconInt;
 
-            if (Icon == Icon.Random)
+            if (icon == Icon.Random)
                 iconInt = new Random().Next(1, 44);
             else
-                iconInt = (int)Icon;
+                iconInt = (int)icon;
 
-            return RequestFunctions.ImageRequest($"challenge?text={Text}&icon={iconInt}");
+            return RequestFunctions.ImageRequest($"challenge?text={text}&icon={iconInt}");
         }
 
         /// <summary>
         /// Returns a MemoryStream for your custom Minecraft-style 'challenge completed' popup.
         /// </summary>
         /// <returns></returns>
-        public static MemoryStream Challenge(string Text, int? Icon = null)
+        public static MemoryStream Challenge(string text, int? icon = null)
         {
-            if (Icon is null)
-                Icon = new Random().Next(1, 44);
+            if (icon is null)
+                icon = new Random().Next(1, 44);
 
-            return RequestFunctions.ImageRequest($"challenge?text={Text}&icon={Icon}");
+            return RequestFunctions.ImageRequest($"challenge?text={text}&icon={icon}");
         }
 
         /// <summary>
         /// Returns an object with all provided color info.
         /// </summary>
         /// <returns></returns>
-        public static Color Color(string Hex = "random")
+        public static Color Color(string hex = "random")
         {
-            if (Hex == "random")
-                Hex = string.Format("{0:X6}", new Random().Next(0x1000000));
+            if (hex == "random")
+                hex = string.Format("{0:X6}", new Random().Next(0x1000000));
 
-            var data = RequestFunctions.JObjectRequest($"color/{Hex}");
+            JObject data = RequestFunctions.JObjectRequest($"color/{hex}");
 
             var Color = new Color
             {
@@ -158,41 +157,41 @@ namespace AlexFlipnote.NET
         /// Returns a MemoryStream for an image of a color.
         /// </summary>
         /// <returns></returns>
-        public static MemoryStream ColorImage(string Hex)
+        public static MemoryStream ColorImage(string hex)
         {
-            return RequestFunctions.ImageRequest($"color/image/{Hex}");
+            return RequestFunctions.ImageRequest($"color/image/{hex}");
         }
 
         /// <summary>
         /// Returns a MemoryStream for a gradient image of a color.
         /// </summary>
         /// <returns></returns>
-        public static MemoryStream ColorImageGradient(string Hex)
+        public static MemoryStream ColorImageGradient(string hex)
         {
-            return RequestFunctions.ImageRequest($"color/image/gradient/{Hex}");
+            return RequestFunctions.ImageRequest($"color/image/gradient/{hex}");
         }
 
         /// <summary>
         /// Returns a MemoryStream for a colourified image.
         /// </summary>
         /// <returns></returns>
-        public static MemoryStream Colourify(string ImageUrl, string ColorHex = "", string BackgroundHex = "")
+        public static MemoryStream Colourify(string imageUrl, string colorHex = "", string backgroundHex = "")
         {
-            if (ColorHex != "")
-                ColorHex = "&c=" + ColorHex;
-            if (BackgroundHex != "")
-                BackgroundHex = "&b=" + BackgroundHex;
+            if (colorHex != "")
+                colorHex = "&c=" + colorHex;
+            if (backgroundHex != "")
+                backgroundHex = "&b=" + backgroundHex;
 
-            return RequestFunctions.ImageRequest($"colourify?image={ImageUrl}{ColorHex}{BackgroundHex}");
+            return RequestFunctions.ImageRequest($"colourify?image={imageUrl}{colorHex}{backgroundHex}");
         }
 
         /// <summary>
         /// Returns a MemoryStream for a fake Google 'did you mean' image.
         /// </summary>
         /// <returns></returns>
-        public static MemoryStream DidYouMean(string TopText, string BottomText)
+        public static MemoryStream DidYouMean(string topText, string bottomText)
         {
-            return RequestFunctions.ImageRequest($"didyoumean?top={TopText}&bottom={BottomText}");
+            return RequestFunctions.ImageRequest($"didyoumean?top={topText}&bottom={bottomText}");
         }
 
         /// <summary>
@@ -208,47 +207,47 @@ namespace AlexFlipnote.NET
         /// Returns a MemoryStream for your own drake meme.
         /// </summary>
         /// <returns></returns>
-        public static MemoryStream Drake(string TopText, string BottomText)
+        public static MemoryStream Drake(string topText, string bottomText)
         {
-            return RequestFunctions.ImageRequest($"drake?top={TopText}&bottom={BottomText}");
+            return RequestFunctions.ImageRequest($"drake?top={topText}&bottom={bottomText}");
         }
 
         /// <summary>
         /// Returns a MemoryStream for your custom Ed Edd n Eddy 'facts book' meme.
         /// </summary>
         /// <returns></returns>
-        public static MemoryStream Facts(string Text)
+        public static MemoryStream Facts(string text)
         {
-            return RequestFunctions.ImageRequest($"facts?text={Text}");
+            return RequestFunctions.ImageRequest($"facts?text={text}");
         }
 
         /// <summary>
         /// Contains all filters.
         /// </summary>
         /// <returns></returns>
-        public static MemoryStream Filter(string ImageUrl, FilterType Filter)
+        public static MemoryStream Filter(string imageUrl, FilterType filter)
         {
             string filterName;
-            if (Filter == FilterType.Random)
+            if (filter == FilterType.Random)
             {
                 Array values = Enum.GetValues(typeof(FilterType));
                 filterName = values.GetValue(new Random().Next(values.Length - 1)).ToString().ToLower();
             }
             else
-                filterName = Filter.ToString().ToLower();
+                filterName = filter.ToString().ToLower();
 
             filterName = filterName.Replace("blackandwhite", "b&w");
 
-            return RequestFunctions.ImageRequest($"filter/{filterName}?image={ImageUrl}");
+            return RequestFunctions.ImageRequest($"filter/{filterName}?image={imageUrl}");
         }    
 
         /// <summary>
         /// Returns a MemoryStream for your own 'the floor is ...' meme.
         /// </summary>
         /// <returns></returns>
-        public static MemoryStream TheFloorIs(string Text, string ImageUrl)
+        public static MemoryStream TheFloorIs(string text, string imageUrl)
         {
-            return RequestFunctions.ImageRequest($"floor?image={ImageUrl}&text={Text}");
+            return RequestFunctions.ImageRequest($"floor?image={imageUrl}&text={text}");
         }
 
         /// <summary>
@@ -264,18 +263,18 @@ namespace AlexFlipnote.NET
         /// Returns a MemoryStream for an image when a joke flies over someone's head.
         /// </summary>
         /// <returns></returns>
-        public static MemoryStream JokeOverHead(string ImageUrl)
+        public static MemoryStream JokeOverHead(string imageUrl)
         {
-            return RequestFunctions.ImageRequest($"jokeoverhead?image={ImageUrl}");
+            return RequestFunctions.ImageRequest($"jokeoverhead?image={imageUrl}");
         }
 
         /// <summary>
         /// Returns a MemoryStream for your custom PornHub logo.
         /// </summary>
         /// <returns></returns>
-        public static MemoryStream PornHub(string Text, string Text2)
+        public static MemoryStream PornHub(string text, string text2)
         {
-            return RequestFunctions.ImageRequest($"pornhub?text={Text}&text2={Text2}");
+            return RequestFunctions.ImageRequest($"pornhub?text={text}&text2={text2}");
         }
 
         /// <summary>
@@ -291,66 +290,66 @@ namespace AlexFlipnote.NET
         /// Returns a MemoryStream to indicate that someone is salty.
         /// </summary>
         /// <returns></returns>
-        public static MemoryStream Salty(string ImageUrl)
+        public static MemoryStream Salty(string imageUrl)
         {
-            return RequestFunctions.ImageRequest($"salty?image={ImageUrl}");
+            return RequestFunctions.ImageRequest($"salty?image={imageUrl}");
         }
 
         /// <summary>
         /// Returns a MemoryStream for your own 'scroll of truth' meme.
         /// </summary>
         /// <returns></returns>
-        public static MemoryStream Scroll(string Text)
+        public static MemoryStream Scroll(string text)
         {
-            return RequestFunctions.ImageRequest($"scroll?text={Text}");
+            return RequestFunctions.ImageRequest($"scroll?text={text}");
         }
 
         /// <summary>
         /// Returns a MemoryStream for your custom PornHub logo.
         /// </summary>
         /// <returns></returns>
-        public static MemoryStream Ship(string User1Avatar, string User2Avatar)
+        public static MemoryStream Ship(string user1Avatar, string user2Avatar)
         {
-            return RequestFunctions.ImageRequest($"ship?user={User1Avatar}&user2={User2Avatar}");
+            return RequestFunctions.ImageRequest($"ship?user={user1Avatar}&user2={user2Avatar}");
         }
 
         /// <summary>
         /// Returns a MemoryStream for your custom Supreme logo.
         /// </summary>
         /// <returns></returns>
-        public static MemoryStream Supreme(string Text, LogoType LogoType = LogoType.Normal)
+        public static MemoryStream Supreme(string text, LogoType logoType = LogoType.Normal)
         {
-            string Mode = "";
-            switch (LogoType)
+            string mode = "";
+            switch (logoType)
             {
                 case LogoType.Dark:
-                    Mode = "&dark=true";
+                    mode = "&dark=true";
                     break;
                 case LogoType.Light:
-                    Mode = "&light=true";
+                    mode = "&light=true";
                     break;
             }
-            return RequestFunctions.ImageRequest($"supreme?text={Text}{Mode}");
+            return RequestFunctions.ImageRequest($"supreme?text={text}{mode}");
         }
 
         /// <summary>
         /// Returns a MemoryStream to show that someone belongs in the trash.
         /// </summary>
         /// <returns></returns>
-        public static MemoryStream Trash(string FaceAvatarUrl, string TrashAvatarUrl)
+        public static MemoryStream Trash(string faceAvatarUrl, string trashAvatarUrl)
         {
-            return RequestFunctions.ImageRequest($"trash?face={FaceAvatarUrl}&trash={TrashAvatarUrl}");
+            return RequestFunctions.ImageRequest($"trash?face={faceAvatarUrl}&trash={trashAvatarUrl}");
         }        
 
         /// <summary>
         /// Returns an object with all provided Steam profile info.
         /// </summary>
         /// <returns></returns>
-        public static Steam Steam(string SteamId)
+        public static Steam Steam(string steamId)
         {
-            var data = RequestFunctions.JObjectRequest($"steam/user/{SteamId}");
+            JObject data = RequestFunctions.JObjectRequest($"steam/user/{steamId}");
 
-            var Steam = new Steam
+            var steam = new Steam
             {
                 SteamId = new Steam.SteamID
                 {
@@ -380,7 +379,7 @@ namespace AlexFlipnote.NET
                 }
             };
 
-            return Steam;
+            return steam;
         }
     }    
 }

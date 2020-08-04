@@ -77,6 +77,7 @@
         Invert,
         BlackAndWhite,
         DeepFry,
+        Sepia,
         Wide,
         Snow,
         Gay,
