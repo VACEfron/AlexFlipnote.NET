@@ -24,6 +24,6 @@ https://api.alexflipnote.dev/
 ## Discord
 Me: VAC Efron#0001
 
-My server: https://discord.gg/TtR32WT
+My server: https://discord.gg/xJ2HRxZ
 
 AlexFlipnote: https://discord.gg/AlexFlipnote
