@@ -1,12 +1,14 @@
-﻿using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
+using System;
 using System.IO;
-using System.Net;
+using System.Net.Http;
+using HtmlAgilityPack;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace AlexFlipnote.NET
 {
     public static class RequestFunctions
-    {        
+    {
         public static string JsonRequest(string endpoint, string jsonObject)
         {
             try
@@ -15,7 +17,10 @@ namespace AlexFlipnote.NET
 
                 return data[jsonObject].Value<string>();
             }
-            catch { throw; }            
+            catch
+            {
+                throw;
+            }
         }
 
         public static JObject JObjectRequest(string endpoint)
@@ -24,28 +29,37 @@ namespace AlexFlipnote.NET
             {
                 return MakeWebRequest(endpoint);
             }
-            catch { throw; }
+            catch
+            {
+                throw;
+            }
         }
 
         public static MemoryStream ImageRequest(string endpoint)
         {
-            try
+            using var httpClient = new HttpClient();
+            var response = httpClient.GetAsync("https://api.alexflipnote.dev/" + endpoint,
+                HttpCompletionOption.ResponseContentRead);
+            var responseMessage = response.Result;
+            if (!responseMessage.IsSuccessStatusCode)
             {
-                using WebClient webClient = new WebClient();
-                
-                byte[] byteArray = webClient.DownloadData($"https://api.alexflipnote.dev/{endpoint}");
-                return new MemoryStream(byteArray);          
+                var result = responseMessage.Content.ReadAsStringAsync().Result;
+                var htmlDoc = new HtmlDocument();
+                htmlDoc.LoadHtml(result);
+                var responseText = htmlDoc.DocumentNode.LastChild.InnerText.Replace("\n","");
+                throw new Exception($"Status {(int)responseMessage.StatusCode}: {responseText}");
             }
-            catch { throw; }            
+            
+
+            var stream = responseMessage.Content.ReadAsStreamAsync();
+            return (MemoryStream) stream.Result;
         }
 
         public static JObject MakeWebRequest(string endpoint)
         {
-            HttpWebRequest request = (HttpWebRequest)WebRequest.Create($"https://api.alexflipnote.dev/{endpoint}");
-            HttpWebResponse response = (HttpWebResponse)request.GetResponse();
-            string responseString = new StreamReader(response.GetResponseStream()).ReadToEnd();
-
-            return (JObject)JsonConvert.DeserializeObject(responseString);
+            var request = new HttpClient();
+            var httpResponseMsg = request.GetAsync($"https://api.alexflipnote.dev/{endpoint}");
+            return (JObject) JsonConvert.DeserializeObject(httpResponseMsg.Result.Content.ReadAsStringAsync().Result);
         }
     }
 }
