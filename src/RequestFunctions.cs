@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net.Http;
@@ -39,9 +38,15 @@ namespace AlexFlipnote.NET
         public static MemoryStream ImageRequest(string endpoint)
         {
             using var httpClient = new HttpClient();
-            var thht = httpClient.GetAsync("https://api.alexflipnote.dev/" + endpoint, HttpCompletionOption.ResponseContentRead);
+            var thht = httpClient.GetAsync("https://api.alexflipnote.dev/" + endpoint,
+                HttpCompletionOption.ResponseContentRead);
             var responseMessage = thht.Result;
-            responseMessage.EnsureSuccessStatusCode();
+            if (!responseMessage.IsSuccessStatusCode)
+            {
+                var result = responseMessage.Content.ReadAsStringAsync().Result;
+                throw new Exception($"Status code: {responseMessage} Error: {result.Split("\n").ElementAt(1)}");
+            }
+            
 
             var stream = responseMessage.Content.ReadAsStreamAsync();
             return (MemoryStream) stream.Result;
@@ -53,7 +58,5 @@ namespace AlexFlipnote.NET
             var httpResponseMsg = request.GetAsync($"https://api.alexflipnote.dev/{endpoint}");
             return (JObject) JsonConvert.DeserializeObject(httpResponseMsg.Result.Content.ReadAsStringAsync().Result);
         }
-
-       
     }
 }
