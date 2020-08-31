@@ -44,7 +44,7 @@ namespace AlexFlipnote.NET
             if (!responseMessage.IsSuccessStatusCode)
             {
                 var result = responseMessage.Content.ReadAsStringAsync().Result;
-                throw new Exception($"Status code: {responseMessage} Error: {result.Split("\n").ElementAt(1)}");
+                throw new Exception($"Status code: {responseMessage.StatusCode} Error: {result.Split("\n").ElementAt(1)}");
             }
             
 
