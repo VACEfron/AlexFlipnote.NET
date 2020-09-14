@@ -339,47 +339,6 @@ namespace AlexFlipnote.NET
         public static MemoryStream Trash(string faceAvatarUrl, string trashAvatarUrl)
         {
             return RequestFunctions.ImageRequest($"trash?face={faceAvatarUrl}&trash={trashAvatarUrl}");
-        }        
-
-        /// <summary>
-        /// Returns an object with all provided Steam profile info.
-        /// </summary>
-        /// <returns></returns>
-        public static Steam Steam(string steamId)
-        {
-            JObject data = RequestFunctions.JObjectRequest($"steam/user/{steamId}");
-
-            var steam = new Steam
-            {
-                SteamId = new Steam.SteamID
-                {
-                    SteamId3 = data["id"]["steamid3"].Value<string>(),
-                    SteamId32 = data["id"]["steamid32"].Value<string>(),
-                    SteamId64 = data["id"]["steamid64"].Value<string>(),
-                    CustomUrl = data["id"]["customurl"].Value<string>()
-                },
-                Avatar = new Steam.SteamAvatar
-                {
-                    AvatarSmall = data["avatars"]["avatar"].Value<string>(),
-                    AvatarMedium = data["avatars"]["avatarmedium"].Value<string>(),
-                    AvatarFull = data["avatars"]["avatarfull"].Value<string>(),
-                },
-                Profile = new Steam.SteamProfile
-                {
-                    Username = data["profile"]["username"].Value<string>(),
-                    Realname = data["profile"]["realname"].Value<string>() ?? null,
-                    Url = data["profile"]["url"].Value<string>(),
-                    Summary = data["profile"]["summary"].Value<string>(),
-                    Background = data["profile"]["background"].Value<string>(),
-                    Location = data["profile"]["location"].Value<string>(),
-                    Status = data["profile"]["state"].Value<string>(),
-                    Privacy = data["profile"]["privacy"].Value<string>(),
-                    TimeCreated = data["profile"]["timecreated"].Value<string>(),
-                    VACBanned = data["profile"]["vacbanned"].Value<bool>()
-                }
-            };
-
-            return steam;
-        }
+        }         
     }    
 }

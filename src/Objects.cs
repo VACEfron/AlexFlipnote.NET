@@ -22,42 +22,6 @@
         }
     }
 
-    public class Steam
-    {
-        public SteamID SteamId { get; set; }
-        public SteamAvatar Avatar { get; set; }
-        public SteamProfile Profile { get; set; }
-
-        public class SteamID
-        {
-            public string SteamId3 { get; set; }
-            public string SteamId32 { get; set; }
-            public string SteamId64 { get; set; }
-            public string CustomUrl { get; set; }
-        }
-        public class SteamAvatar
-        {
-            public string AvatarSmall { get; set; }
-            public string AvatarMedium { get; set; }
-            public string AvatarFull { get; set; }
-        }
-        public class SteamProfile
-        {
-            public string Username { get; set; }
-#nullable enable
-            public string? Realname { get; set; }
-#nullable disable
-            public string Url { get; set; }
-            public string Summary { get; set; }
-            public string Background { get; set; }
-            public string Location { get; set; }
-            public string Status { get; set; }
-            public string Privacy { get; set; }
-            public string TimeCreated { get; set; }
-            public bool VACBanned { get; set; }
-        }
-    }
-
     /// <summary>
     /// Logo types for the Supreme endpoint.
     /// </summary>

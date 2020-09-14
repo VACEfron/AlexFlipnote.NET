@@ -38,6 +38,8 @@ namespace AlexFlipnote.NET
         public static MemoryStream ImageRequest(string endpoint)
         {
             using var httpClient = new HttpClient();
+
+            httpClient.DefaultRequestHeaders.Add("User-Agent", "AlexFlipnote.NET by VAC Efron#0001");
             var response = httpClient.GetAsync("https://api.alexflipnote.dev/" + endpoint,
                 HttpCompletionOption.ResponseContentRead);
             var responseMessage = response.Result;
@@ -50,15 +52,16 @@ namespace AlexFlipnote.NET
                 throw new Exception($"Status {(int)responseMessage.StatusCode}: {responseText}");
             }
             
-
             var stream = responseMessage.Content.ReadAsStreamAsync();
             return (MemoryStream) stream.Result;
         }
 
         public static JObject MakeWebRequest(string endpoint)
         {
-            var request = new HttpClient();
-            var httpResponseMsg = request.GetAsync($"https://api.alexflipnote.dev/{endpoint}");
+            var httpClient = new HttpClient();
+
+            httpClient.DefaultRequestHeaders.Add("User-Agent", "AlexFlipnote.NET by VAC Efron#0001");
+            var httpResponseMsg = httpClient.GetAsync($"https://api.alexflipnote.dev/{endpoint}");
             return (JObject) JsonConvert.DeserializeObject(httpResponseMsg.Result.Content.ReadAsStringAsync().Result);
         }
     }
