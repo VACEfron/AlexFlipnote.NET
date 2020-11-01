@@ -1,7 +1,6 @@
 using System;
 using System.IO;
 using System.Net.Http;
-using HtmlAgilityPack;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
@@ -40,20 +39,18 @@ namespace AlexFlipnote.NET
             using var httpClient = new HttpClient();
 
             httpClient.DefaultRequestHeaders.Add("User-Agent", "AlexFlipnote.NET by VAC Efron#0001");
-            var response = httpClient.GetAsync("https://api.alexflipnote.dev/" + endpoint,
-                HttpCompletionOption.ResponseContentRead);
-            var responseMessage = response.Result;
+            var getRequest = httpClient.GetAsync("https://api.alexflipnote.dev/" + endpoint, HttpCompletionOption.ResponseContentRead);
+            var responseMessage = getRequest.Result;
+
             if (!responseMessage.IsSuccessStatusCode)
             {
-                var result = responseMessage.Content.ReadAsStringAsync().Result;
-                var htmlDoc = new HtmlDocument();
-                htmlDoc.LoadHtml(result);
-                var responseText = htmlDoc.DocumentNode.LastChild.InnerText.Replace("\n","");
-                throw new Exception($"Status {(int)responseMessage.StatusCode}: {responseText}");
+                var responseString = responseMessage.Content.ReadAsStringAsync().Result;
+                var error = (JObject)JsonConvert.DeserializeObject(responseString);
+                throw new Exception($"Status {error["code"].Value<int>()}: {error["name"].Value<string>()}. {error["description"].Value<string>()}");
             }
-            
+
             var stream = responseMessage.Content.ReadAsStreamAsync();
-            return (MemoryStream) stream.Result;
+            return (MemoryStream)stream.Result;
         }
 
         public static JObject MakeWebRequest(string endpoint)
@@ -61,8 +58,8 @@ namespace AlexFlipnote.NET
             var httpClient = new HttpClient();
 
             httpClient.DefaultRequestHeaders.Add("User-Agent", "AlexFlipnote.NET by VAC Efron#0001");
-            var httpResponseMsg = httpClient.GetAsync($"https://api.alexflipnote.dev/{endpoint}");
-            return (JObject) JsonConvert.DeserializeObject(httpResponseMsg.Result.Content.ReadAsStringAsync().Result);
+            var responseMessage = httpClient.GetAsync($"https://api.alexflipnote.dev/{endpoint}");
+            return (JObject)JsonConvert.DeserializeObject(responseMessage.Result.Content.ReadAsStringAsync().Result);
         }
     }
 }

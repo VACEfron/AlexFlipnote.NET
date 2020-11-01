@@ -339,6 +339,15 @@ namespace AlexFlipnote.NET
         public static MemoryStream Trash(string faceAvatarUrl, string trashAvatarUrl)
         {
             return RequestFunctions.ImageRequest($"trash?face={faceAvatarUrl}&trash={trashAvatarUrl}");
-        }         
+        }
+
+        /// <summary>
+        /// Returns a MemoryStream for an 'Earthbound what' meme.
+        /// </summary>
+        /// <returns></returns>
+        public static MemoryStream What(string imageUrl)
+        {
+            return RequestFunctions.ImageRequest($"what?image={imageUrl}");
+        }
     }    
 }
