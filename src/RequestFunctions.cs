@@ -6,9 +6,11 @@ using Newtonsoft.Json.Linq;
 
 namespace AlexFlipnote.NET
 {
-    public static class RequestFunctions
+    internal static class RequestFunctions
     {
-        public static string JsonRequest(string endpoint, string jsonObject)
+        internal static string _token;
+
+        internal static string JsonRequest(string endpoint, string jsonObject)
         {
             try
             {
@@ -22,7 +24,7 @@ namespace AlexFlipnote.NET
             }
         }
 
-        public static JObject JObjectRequest(string endpoint)
+        internal static JObject JObjectRequest(string endpoint)
         {
             try
             {
@@ -34,18 +36,21 @@ namespace AlexFlipnote.NET
             }
         }
 
-        public static MemoryStream ImageRequest(string endpoint)
+        internal static MemoryStream ImageRequest(string endpoint)
         {
             using var httpClient = new HttpClient();
 
             httpClient.DefaultRequestHeaders.Add("User-Agent", "AlexFlipnote.NET by VAC Efron#0001");
+            if (!string.IsNullOrEmpty(_token))
+                httpClient.DefaultRequestHeaders.Add("Authorization", _token);
+
             var getRequest = httpClient.GetAsync("https://api.alexflipnote.dev/" + endpoint, HttpCompletionOption.ResponseContentRead);
             var responseMessage = getRequest.Result;
 
             if (!responseMessage.IsSuccessStatusCode)
             {
                 var responseString = responseMessage.Content.ReadAsStringAsync().Result;
-                var error = (JObject)JsonConvert.DeserializeObject(responseString);
+                JObject error = (JObject)JsonConvert.DeserializeObject(responseString);
                 throw new Exception($"Status {error["code"].Value<int>()}: {error["name"].Value<string>()}. {error["description"].Value<string>()}");
             }
 
@@ -53,13 +58,22 @@ namespace AlexFlipnote.NET
             return (MemoryStream)stream.Result;
         }
 
-        public static JObject MakeWebRequest(string endpoint)
+        internal static JObject MakeWebRequest(string endpoint)
         {
             var httpClient = new HttpClient();
 
             httpClient.DefaultRequestHeaders.Add("User-Agent", "AlexFlipnote.NET by VAC Efron#0001");
-            var responseMessage = httpClient.GetAsync($"https://api.alexflipnote.dev/{endpoint}");
-            return (JObject)JsonConvert.DeserializeObject(responseMessage.Result.Content.ReadAsStringAsync().Result);
-        }
+            if (!string.IsNullOrEmpty(_token))
+                httpClient.DefaultRequestHeaders.Add("Authorization", _token);
+
+            var getRequest = httpClient.GetAsync("https://api.alexflipnote.dev/" + endpoint);
+            var responseMessage = getRequest.Result;
+            var responseJson = (JObject)JsonConvert.DeserializeObject(responseMessage.Content.ReadAsStringAsync().Result);
+
+            if (!responseMessage.IsSuccessStatusCode)                            
+                throw new Exception($"Status {responseJson["code"].Value<int>()}: {responseJson["name"].Value<string>()}. {responseJson["description"].Value<string>()}");         
+
+            return responseJson;
+        }        
     }
 }
