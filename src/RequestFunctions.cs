@@ -10,13 +10,13 @@ namespace AlexFlipnote.NET
     {
         internal static string _token;
 
-        internal static string JsonRequest(string endpoint, string jsonObject)
+        internal static string JsonRequest(string endpoint, string key)
         {
             try
             {
                 JObject data = MakeWebRequest(endpoint);
 
-                return data[jsonObject].Value<string>();
+                return data[key].Value<string>();
             }
             catch
             {
