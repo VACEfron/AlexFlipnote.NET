@@ -51,7 +51,7 @@ namespace AlexFlipnote.NET
             {
                 var responseString = responseMessage.Content.ReadAsStringAsync().Result;
                 JObject error = (JObject)JsonConvert.DeserializeObject(responseString);
-                throw new Exception($"Status {error["code"].Value<int>()}: {error["name"].Value<string>()}. {error["description"].Value<string>()}");
+                throw new Exception($"Status {(int)error["code"]}: {(string)error["name"]}. {(string)error["description"]}");
             }
 
             var stream = responseMessage.Content.ReadAsStreamAsync();
@@ -71,7 +71,7 @@ namespace AlexFlipnote.NET
             var responseJson = (JObject)JsonConvert.DeserializeObject(responseMessage.Content.ReadAsStringAsync().Result);
 
             if (!responseMessage.IsSuccessStatusCode)                            
-                throw new Exception($"Status {responseJson["code"].Value<int>()}: {responseJson["name"].Value<string>()}. {responseJson["description"].Value<string>()}");         
+                throw new Exception($"Status {(int)responseJson["code"]}: {(string)responseJson["name"]}. {(string)responseJson["description"]}");         
 
             return responseJson;
         }        
