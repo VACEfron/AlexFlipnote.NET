@@ -285,6 +285,14 @@ namespace AlexFlipnote.NET
         }
 
         /// <summary>
+        /// Returns a MemoryStream for your own Total Drama Island's 'Dock of Shame' meme.
+        /// </summary>       
+        public static MemoryStream Shame(string imageUrl)
+        {
+            return RequestFunctions.ImageRequest($"shame?image={imageUrl}");
+        }
+
+        /// <summary>
         /// Returns a MemoryStream for your custom PornHub logo.
         /// </summary>       
         public static MemoryStream Ship(string user1Avatar, string user2Avatar)
