@@ -14,7 +14,7 @@
         public string[] Shades { get; set; }
         public string[] Tints { get; set; }
 
-        public class RgbValue
+        public struct RgbValue
         {
             public int R { get; set; }
             public int G { get; set; }
@@ -49,6 +49,7 @@
         Jpegify,
         Magik,
         Communist,
+        Flip,
         Random
     }
 
