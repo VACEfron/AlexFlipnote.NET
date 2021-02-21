@@ -50,6 +50,7 @@
         Magik,
         Communist,
         Flip,
+        Mirror,
         Random
     }
 
