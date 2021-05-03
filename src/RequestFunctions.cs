@@ -1,6 +1,7 @@
 using System;
 using System.IO;
 using System.Net.Http;
+using System.Threading.Tasks;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
@@ -8,15 +9,11 @@ namespace AlexFlipnote.NET
 {
     internal static class RequestFunctions
     {
-        internal static string _token;
-
-        internal static string JsonRequest(string endpoint, string key)
+        internal static async Task<string> JsonRequest(string endpoint, string key, string token)
         {
             try
             {
-                JObject data = MakeWebRequest(endpoint);
-
-                return data[key].Value<string>();
+                return (string)(await MakeWebRequest(endpoint, token))[key];
             }
             catch
             {
@@ -24,11 +21,11 @@ namespace AlexFlipnote.NET
             }
         }
 
-        internal static JObject JObjectRequest(string endpoint)
+        internal static async Task<JObject> JObjectRequest(string endpoint, string token)
         {
             try
             {
-                return MakeWebRequest(endpoint);
+                return await MakeWebRequest(endpoint, token);
             }
             catch
             {
@@ -36,39 +33,37 @@ namespace AlexFlipnote.NET
             }
         }
 
-        internal static MemoryStream ImageRequest(string endpoint)
+        internal static async Task<MemoryStream> ImageRequest(string endpoint, string token)
         {
             using var httpClient = new HttpClient();
 
             httpClient.DefaultRequestHeaders.Add("User-Agent", "AlexFlipnote.NET by VAC Efron#0001");
-            if (!string.IsNullOrEmpty(_token))
-                httpClient.DefaultRequestHeaders.Add("Authorization", _token);
 
-            var getRequest = httpClient.GetAsync("https://api.alexflipnote.dev/" + endpoint, HttpCompletionOption.ResponseContentRead);
-            var responseMessage = getRequest.Result;
+            if (!string.IsNullOrEmpty(token))
+                httpClient.DefaultRequestHeaders.Add("Authorization", token);
+
+            var responseMessage = await httpClient.GetAsync("https://api.alexflipnote.dev/" + endpoint, HttpCompletionOption.ResponseContentRead);
 
             if (!responseMessage.IsSuccessStatusCode)
             {
-                var responseString = responseMessage.Content.ReadAsStringAsync().Result;
-                JObject error = (JObject)JsonConvert.DeserializeObject(responseString);
+                JObject error = (JObject)JsonConvert.DeserializeObject(await responseMessage.Content.ReadAsStringAsync());
                 throw new Exception($"Status {(int)error["code"]}: {(string)error["name"]}. {(string)error["description"]}");
             }
 
-            var stream = responseMessage.Content.ReadAsStreamAsync();
-            return (MemoryStream)stream.Result;
+            return (MemoryStream)await responseMessage.Content.ReadAsStreamAsync();
         }
 
-        internal static JObject MakeWebRequest(string endpoint)
+        internal static async Task<JObject> MakeWebRequest(string endpoint, string token)
         {
             var httpClient = new HttpClient();
 
-            httpClient.DefaultRequestHeaders.Add("User-Agent", "AlexFlipnote.NET by VAC Efron#0001");
-            if (!string.IsNullOrEmpty(_token))
-                httpClient.DefaultRequestHeaders.Add("Authorization", _token);
+            httpClient.DefaultRequestHeaders.Add("User-Agent", "AlexFlipnote.NET by VAC Efron#0011");
 
-            var getRequest = httpClient.GetAsync("https://api.alexflipnote.dev/" + endpoint);
-            var responseMessage = getRequest.Result;
-            var responseJson = (JObject)JsonConvert.DeserializeObject(responseMessage.Content.ReadAsStringAsync().Result);
+            if (!string.IsNullOrEmpty(token))
+                httpClient.DefaultRequestHeaders.Add("Authorization", token);
+
+            var responseMessage = await httpClient.GetAsync("https://api.alexflipnote.dev/" + endpoint);
+            var responseJson = (JObject)JsonConvert.DeserializeObject(await responseMessage.Content.ReadAsStringAsync());
 
             if (!responseMessage.IsSuccessStatusCode)                            
                 throw new Exception($"Status {(int)responseJson["code"]}: {(string)responseJson["name"]}. {(string)responseJson["description"]}");         
