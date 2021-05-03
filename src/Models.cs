@@ -1,20 +1,28 @@
-﻿namespace AlexFlipnote.NET
+﻿using Newtonsoft.Json;
+
+namespace AlexFlipnote.NET
 {
     public class Color
     {
+        [JsonProperty("blackorwhite_text")]
         public string BlackOrWhiteText { get; set; }
         public int Brightness { get; set; }
         public string Hex { get; set; }
+        [JsonProperty("image")]
         public string ImageUrl { get; set; }
+        [JsonProperty("image_gradient")]
         public string GradientImageUrl { get; set; }
         public int Int { get; set; }
         public string Name { get; set; }
-        public string RGB { get; set; }
-        public RgbValue RGBValue { get; set; }
+        public string Rgb { get; set; }
+        [JsonProperty("rgb_values")]
+        public RGBValue RgbValue { get; set; }
+        [JsonProperty("shade")]
         public string[] Shades { get; set; }
+        [JsonProperty("tint")]
         public string[] Tints { get; set; }
 
-        public struct RgbValue
+        public struct RGBValue
         {
             public int R { get; set; }
             public int G { get; set; }
