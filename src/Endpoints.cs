@@ -2,217 +2,139 @@
 using Newtonsoft.Json.Linq;
 using System;
 using System.IO;
+using System.Threading.Tasks;
 
 namespace AlexFlipnote.NET
 {
     /// <summary>
     /// Class which contains all methods for the endpoints.
     /// </summary>
-    public static class AlexEndpoint
+    public class AlexFlipnoteClient
     {
-        /// <summary>
-        /// Set your authorization token.
-        /// </summary>
-        public static void SetAuthToken(string token)
-            => RequestFunctions._token = token;
+        public AlexFlipnoteClient(string token)
+        {
+            Token = token;
+        }
+
+        public string Token { get; set; }
 
         /// <summary>
         /// Returns a MemoryStream for your custom Minecraft-style 'achievement unlocked' popup.
         /// </summary>     
-        public static MemoryStream Achievement(string text, Icon icon)
-        {
-            int iconInt;
-
-            if (icon == Icon.Random)
-                iconInt = new Random().Next(1, 45);
-            else
-                iconInt = (int)icon;
-            
-            return RequestFunctions.ImageRequest($"achievement?text={text}&icon={iconInt}");
-        }
+        public async Task<MemoryStream> Achievement(string text, Icon icon)
+            => await RequestFunctions.ImageRequest($"achievement?text={text}&icon={(icon == Icon.Random ? new Random().Next(1, 45) : (int)icon)}", Token);
 
         /// <summary>
         /// Returns a MemoryStream for your custom Minecraft-style 'achievement unlocked' popup.
         /// </summary>      
-        public static MemoryStream Achievement(string text, int? icon = null)
-        {
-            if (icon is null)
-                icon = new Random().Next(1, 45);
-            
-            return RequestFunctions.ImageRequest($"achievement?text={text}&icon={icon}");
-        }        
+        public async Task<MemoryStream> Achievement(string text, int? icon = null)
+            => await RequestFunctions.ImageRequest($"achievement?text={text}&icon={(icon is null ? new Random().Next(1, 45) : icon)}", Token);
 
         /// <summary>
         /// Returns a MemoryStream for your own image over the 'Am I a joke to you?' meme.
         /// </summary>       
-        public static MemoryStream AmIAJoke(string imageUrl)
-        {
-            return RequestFunctions.ImageRequest($"amiajoke?image={imageUrl}");
-        }
+        public async Task<MemoryStream> AmIAJoke(string imageUrl)
+            => await RequestFunctions.ImageRequest($"amiajoke?image={imageUrl}", Token);
 
         /// <summary>
         /// Returns a MemoryStream for showing how bad someone is.
         /// </summary>       
-        public static MemoryStream Bad(string imageUrl)
-        {
-            return RequestFunctions.ImageRequest($"bad?image={imageUrl}");
-        }
+        public async Task<MemoryStream> Bad(string imageUrl)
+            => await RequestFunctions.ImageRequest($"bad?image={imageUrl}", Token);
 
         /// <summary>
         /// Returns a url to a random birb image.
         /// </summary>     
-        public static string Birb()
-        {
-            return RequestFunctions.JsonRequest("birb", "file");
-        }
+        public async Task<string> Birb()
+            => await RequestFunctions.JsonRequest("birb", "file", Token);
 
         /// <summary>
         /// Returns a MemoryStream for your own 'Tom calling' reaction meme.
         /// </summary>       
-        public static MemoryStream Calling(string text)
-        {
-            return RequestFunctions.ImageRequest($"calling?text={text}");
-        }
+        public async Task<MemoryStream> Calling(string text)
+            => await RequestFunctions.ImageRequest($"calling?text={text}", Token);
 
         /// <summary>
         /// Returns a MemoryStream for your custom captcha image.
         /// </summary>      
-        public static MemoryStream Captcha(string text)
-        {
-            return RequestFunctions.ImageRequest($"captcha?text={text}");
-        }
+        public async Task<MemoryStream> Captcha(string text)
+            => await RequestFunctions.ImageRequest($"captcha?text={text}", Token);
 
         /// <summary>
         /// Returns a url to a random cat image.
         /// </summary>      
-        public static string Cats()
-        {
-            return RequestFunctions.JsonRequest("cats", "file");
-        }
+        public async Task<string> Cats()
+            => await RequestFunctions.JsonRequest("cats", "file", Token);
 
         /// <summary>
         /// Returns a MemoryStream for your custom Minecraft-style 'challenge completed' popup.
         /// </summary>       
-        public static MemoryStream Challenge(string text, Icon icon)
-        {
-            int iconInt;
-
-            if (icon == Icon.Random)
-                iconInt = new Random().Next(1, 44);
-            else
-                iconInt = (int)icon;
-
-            return RequestFunctions.ImageRequest($"challenge?text={text}&icon={iconInt}");
-        }
+        public async Task<MemoryStream> Challenge(string text, Icon icon)
+            => await RequestFunctions.ImageRequest($"challenge?text={text}&icon={(icon == Icon.Random ? new Random().Next(1, 45) : (int)icon)}", Token);
 
         /// <summary>
         /// Returns a MemoryStream for your custom Minecraft-style 'challenge completed' popup.
         /// </summary>    
-        public static MemoryStream Challenge(string text, int? icon = null)
-        {
-            if (icon is null)
-                icon = new Random().Next(1, 44);
-
-            return RequestFunctions.ImageRequest($"challenge?text={text}&icon={icon}");
-        }
+        public async Task<MemoryStream> Challenge(string text, int? icon = null)
+            => await RequestFunctions.ImageRequest($"challenge?text={text}&icon={(icon is null ? new Random().Next(1, 45) : icon)}", Token);
 
         /// <summary>
         /// Returns an object with all provided color info.
         /// </summary>      
-        public static Color Color(string hex = "random")
+        public async Task<Color> Color(string hex = "random")
         {
-            if (hex == "random")
-                hex = string.Format("{0:X6}", new Random().Next(0x1000000));
+            JObject data = await RequestFunctions.JObjectRequest($"color/{(hex == "random" ? string.Format("{0:X6}", new Random().Next(0x1000000)) : hex)}", Token);
 
-            JObject data = RequestFunctions.JObjectRequest($"color/{hex}");
-
-            var Color = new Color
-            {
-                BlackOrWhiteText = data["blackorwhite_text"].Value<string>(),
-                Brightness = data["brightness"].Value<int>(),
-                Hex = data["hex"].Value<string>(),
-                ImageUrl = data["image"].Value<string>(),
-                GradientImageUrl = data["image_gradient"].Value<string>(),
-                Int = data["int"].Value<int>(),
-                Name = data["name"].Value<string>(),
-                RGB = data["rgb"].Value<string>(),
-                RGBValue = new Color.RgbValue
-                {
-                    R = data["rgb_values"]["r"].Value<int>(),
-                    G = data["rgb_values"]["g"].Value<int>(),
-                    B = data["rgb_values"]["b"].Value<int>()
-                },
-                Shades = JsonConvert.DeserializeObject<string[]>(data["shade"].ToString()),
-                Tints = JsonConvert.DeserializeObject<string[]>(data["tint"].ToString()),
-            };
-            return Color;
+            return JsonConvert.DeserializeObject<Color>(data.ToString());
         }
 
         /// <summary>
         /// Returns a MemoryStream for an image of a color.
         /// </summary>    
-        public static MemoryStream ColorImage(string hex)
-        {
-            return RequestFunctions.ImageRequest($"color/image/{hex}");
-        }
+        public async Task<MemoryStream> ColorImage(string hex)
+            => await RequestFunctions.ImageRequest($"color/image/{hex}", Token);
 
         /// <summary>
         /// Returns a MemoryStream for a gradient image of a color.
         /// </summary>      
-        public static MemoryStream ColorImageGradient(string hex)
-        {
-            return RequestFunctions.ImageRequest($"color/image/gradient/{hex}");
-        }
+        public async Task<MemoryStream> ColorImageGradient(string hex)
+            => await RequestFunctions.ImageRequest($"color/image/gradient/{hex}", Token);
 
         /// <summary>
         /// Returns a MemoryStream for a colourified image.
         /// </summary>       
-        public static MemoryStream Colourify(string imageUrl, string colorHex = "", string backgroundHex = "")
-        {
-            if (colorHex != "")
-                colorHex = "&c=" + colorHex;
-            if (backgroundHex != "")
-                backgroundHex = "&b=" + backgroundHex;
-
-            return RequestFunctions.ImageRequest($"colourify?image={imageUrl}{colorHex}{backgroundHex}");
-        }
+        public async Task<MemoryStream> Colourify(string imageUrl, string colorHex = "", string backgroundHex = "")
+            => await RequestFunctions.ImageRequest($"colourify?image={imageUrl}{(!string.IsNullOrEmpty(colorHex) ? $"&c={colorHex}" : "")}" +
+                $"{(!string.IsNullOrEmpty(backgroundHex) ? $"&b={backgroundHex}" : "")}", Token);
 
         /// <summary>
         /// Returns a MemoryStream for a fake Google 'did you mean' image.
         /// </summary>    
-        public static MemoryStream DidYouMean(string topText, string bottomText)
-        {
-            return RequestFunctions.ImageRequest($"didyoumean?top={topText}&bottom={bottomText}");
-        }
+        public async Task<MemoryStream> DidYouMean(string topText, string bottomText)
+            => await RequestFunctions.ImageRequest($"didyoumean?top={topText}&bottom={bottomText}", Token);
 
         /// <summary>
         /// Returns a url to a random dog image.
         /// </summary>   
-        public static string Dogs()
-        {
-            return RequestFunctions.JsonRequest("dogs", "file");
-        }
+        public async Task<string> Dogs()
+            => await RequestFunctions.JsonRequest("dogs", "file", Token);
 
         /// <summary>
         /// Returns a MemoryStream for your own drake meme.
         /// </summary>      
-        public static MemoryStream Drake(string topText, string bottomText)
-        {
-            return RequestFunctions.ImageRequest($"drake?top={topText}&bottom={bottomText}");
-        }
+        public async Task<MemoryStream> Drake(string topText, string bottomText)
+            => await RequestFunctions.ImageRequest($"drake?top={topText}&bottom={bottomText}", Token);
 
         /// <summary>
         /// Returns a MemoryStream for your custom Ed Edd n Eddy 'facts book' meme.
         /// </summary>      
-        public static MemoryStream Facts(string text)
-        {
-            return RequestFunctions.ImageRequest($"facts?text={text}");
-        }
+        public async Task<MemoryStream> Facts(string text)
+            => await RequestFunctions.ImageRequest($"facts?text={text}", Token);
 
         /// <summary>
         /// Contains all filters.
         /// </summary>      
-        public static MemoryStream Filter(string imageUrl, FilterType filter)
+        public async Task<MemoryStream> Filter(string imageUrl, FilterType filter)
         {
             string filterName;
             if (filter == FilterType.Random)
@@ -225,112 +147,89 @@ namespace AlexFlipnote.NET
 
             filterName = filterName.Replace("blackandwhite", "b&w");
 
-            return RequestFunctions.ImageRequest($"filter/{filterName}?image={imageUrl}");
+            return await RequestFunctions.ImageRequest($"filter/{filterName}?image={imageUrl}", Token);
         }    
 
         /// <summary>
         /// Returns a MemoryStream for your own 'the floor is ...' meme.
         /// </summary>        
-        public static MemoryStream TheFloorIs(string text, string imageUrl)
-        {
-            return RequestFunctions.ImageRequest($"floor?image={imageUrl}&text={text}");
-        }
+        public async Task<MemoryStream> TheFloorIs(string text, string imageUrl)
+            => await RequestFunctions.ImageRequest($"floor?image={imageUrl}&text={text}", Token);
 
         /// <summary>
         /// Returns a random fuck my life quote.
         /// </summary>       
-        public static string Fml()
-        {
-            return RequestFunctions.JsonRequest("fml", "text");
-        }
+        public async Task<string> Fml()
+            => await RequestFunctions.JsonRequest("fml", "text", Token);
 
         /// <summary>
         /// Returns a MemoryStream for an image when a joke flies over someone's head.
         /// </summary>      
-        public static MemoryStream JokeOverHead(string imageUrl)
-        {
-            return RequestFunctions.ImageRequest($"jokeoverhead?image={imageUrl}");
-        }
+        public async Task<MemoryStream> JokeOverHead(string imageUrl)
+            => await RequestFunctions.ImageRequest($"jokeoverhead?image={imageUrl}", Token);
 
         /// <summary>
         /// Returns a MemoryStream for your custom PornHub logo.
         /// </summary>       
-        public static MemoryStream PornHub(string text, string text2)
-        {
-            return RequestFunctions.ImageRequest($"pornhub?text={text}&text2={text2}");
-        }
+        public async Task<MemoryStream> PornHub(string text, string text2)
+            => await RequestFunctions.ImageRequest($"pornhub?text={text}&text2={text2}", Token);
 
         /// <summary>
         /// Returns a url to a random sadcat image.
         /// </summary>       
-        public static string Sadcat()
-        {
-            return RequestFunctions.JsonRequest("sadcat", "file");
-        }
+        public async Task<string> Sadcat()
+            => await RequestFunctions.JsonRequest("sadcat", "file", Token);
 
         /// <summary>
         /// Returns a MemoryStream to indicate that someone is salty.
         /// </summary>       
-        public static MemoryStream Salty(string imageUrl)
-        {
-            return RequestFunctions.ImageRequest($"salty?image={imageUrl}");
-        }
+        public async Task<MemoryStream> Salty(string imageUrl)
+            => await RequestFunctions.ImageRequest($"salty?image={imageUrl}", Token);
 
         /// <summary>
         /// Returns a MemoryStream for your own 'scroll of truth' meme.
         /// </summary>       
-        public static MemoryStream Scroll(string text)
-        {
-            return RequestFunctions.ImageRequest($"scroll?text={text}");
-        }
+        public async Task<MemoryStream> Scroll(string text)
+            => await RequestFunctions.ImageRequest($"scroll?text={text}", Token);
 
         /// <summary>
         /// Returns a MemoryStream for your own Total Drama Island's 'Dock of Shame' meme.
         /// </summary>       
-        public static MemoryStream Shame(string imageUrl)
+        public async Task<MemoryStream> Shame(string imageUrl)
         {
-            return RequestFunctions.ImageRequest($"shame?image={imageUrl}");
+            return await RequestFunctions.ImageRequest($"shame?image={imageUrl}", Token);
         }
 
         /// <summary>
         /// Returns a MemoryStream for your custom PornHub logo.
         /// </summary>       
-        public static MemoryStream Ship(string user1Avatar, string user2Avatar)
-        {
-            return RequestFunctions.ImageRequest($"ship?user={user1Avatar}&user2={user2Avatar}");
-        }
+        public async Task<MemoryStream> Ship(string user1Avatar, string user2Avatar)
+            => await RequestFunctions.ImageRequest($"ship?user={user1Avatar}&user2={user2Avatar}", Token);
 
         /// <summary>
         /// Returns a MemoryStream for your custom Supreme logo.
         /// </summary>        
-        public static MemoryStream Supreme(string text, LogoType logoType = LogoType.Normal)
+        public async Task<MemoryStream> Supreme(string text, LogoType logoType = LogoType.Normal)
         {
-            string mode = "";
-            switch (logoType)
+            string mode = logoType switch
             {
-                case LogoType.Dark:
-                    mode = "&dark=true";
-                    break;
-                case LogoType.Light:
-                    mode = "&light=true";
-                    break;
-            }
-            return RequestFunctions.ImageRequest($"supreme?text={text}{mode}");
+                LogoType.Dark => "&dark=true",
+                LogoType.Light => "&light=true",
+                _ => ""
+            };
+            return await RequestFunctions.ImageRequest($"supreme?text={text}{mode}", Token);
         }
+
         /// <summary>
         /// Returns a MemoryStream to show that someone belongs in the trash.
         /// </summary>        
-        public static MemoryStream Trash(string faceAvatarUrl, string trashAvatarUrl)
-        {
-            return RequestFunctions.ImageRequest($"trash?face={faceAvatarUrl}&trash={trashAvatarUrl}");
-        }
+        public async Task<MemoryStream> Trash(string faceAvatarUrl, string trashAvatarUrl)
+            => await RequestFunctions.ImageRequest($"trash?face={faceAvatarUrl}&trash={trashAvatarUrl}", Token);
 
         /// <summary>
         /// Returns a MemoryStream for an 'Earthbound what' meme.
         /// </summary>       
-        public static MemoryStream What(string imageUrl)
-        {
-            return RequestFunctions.ImageRequest($"what?image={imageUrl}");
-        }
+        public async Task<MemoryStream> What(string imageUrl)
+            => await RequestFunctions.ImageRequest($"what?image={imageUrl}", Token);
     }    
 }
