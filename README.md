@@ -5,18 +5,16 @@ An API wrapper for AlexFlipnote's web API.
 https://www.nuget.org/packages/AlexFlipnote.NET/
 
 ## Example
-Before using any endpoints, you must set your auth token. Authorization tokens are required to access this API. You can invoke this method somewhere in your Main function.
-```csharp
-AlexEndpoint.SetAuthToken("YOUR_TOKEN");
-```
 Example command using [Discord.NET](https://github.com/discord-net/Discord.Net) and AlexFlipnote.NET.
 ```csharp
 [Command("captcha"), Summary("Create your custom captcha.")]
 public async Task Captcha([Remainder]string myText)
 {
+    // Create an instance of the AlexFlipnoteClient class and pass your token to the constructor.
+    var client = new AlexFlipnoteClient("yourToken");
+    
     // Invoke the Captcha method.
-    // All endpoints can be accessed from the AlexEndpoint class.
-    var stream = AlexEndpoint.Captcha(myText); 
+    var stream = await client.Captcha(myText); 
 
     await Context.Channel.SendFileAsync(stream, "image.png");
 }
